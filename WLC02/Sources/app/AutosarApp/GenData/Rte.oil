@@ -1,0 +1,105 @@
+/**********************************************************************************************************************
+ *  COPYRIGHT
+ *  -------------------------------------------------------------------------------------------------------------------
+ *  \verbatim
+ *
+ *                This software is copyright protected and proprietary to Vector Informatik GmbH.
+ *                Vector Informatik GmbH grants to you only those rights as set out in the license conditions.
+ *                All other rights remain with Vector Informatik GmbH.
+ *  \endverbatim
+ *  -------------------------------------------------------------------------------------------------------------------
+ *  FILE DESCRIPTION
+ *  -------------------------------------------------------------------------------------------------------------------
+ *             File:  Rte.oil
+ *           Config:  WLC.dpa
+ *      ECU-Project:  WLC
+ *
+ *        Generator:  MICROSAR RTE Generator Version 4.20.0
+ *                    RTE Core Version 1.20.0
+ *          License:  CBD1900162
+ *
+ *      Description:  OIL-File containing project specific OS definitions for the MICROSAR RTE
+ *********************************************************************************************************************/
+
+/**********************************************************************************************************************
+ *                                              P L E A S E   N O T E
+ *
+ * The attributes in this file must not be changed. Missing mandatory attributes must be set in the including file.
+ * They are presented as a comment in the corresponding object definition containing a list of all legal values.
+ *********************************************************************************************************************/
+
+   TASK OsTask_APP {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 10:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+      EVENT = Rte_Ev_Run_Communication_Read_APP_ComReadandWrite_Runnable:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Communication_Read_APP_ComReadandWrite_Runnable {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_APP;
+         EVENT = Rte_Ev_Run_Communication_Read_APP_ComReadandWrite_Runnable;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_BSW_SCHM {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 0:"@RO@";
+      SCHEDULE = FULL:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+      EVENT = Rte_Ev_Cyclic2_OsTask_BSW_SCHM_0_10ms:"@RO@";
+      EVENT = Rte_Ev_Cyclic2_OsTask_BSW_SCHM_0_20ms:"@RO@";
+      EVENT = Rte_Ev_Run_CanTp_CanTp_MainFunction:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE2_OsTask_BSW_SCHM_0_10ms {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_BSW_SCHM;
+         EVENT = Rte_Ev_Cyclic2_OsTask_BSW_SCHM_0_10ms;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE2_OsTask_BSW_SCHM_0_20ms {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_BSW_SCHM;
+         EVENT = Rte_Ev_Cyclic2_OsTask_BSW_SCHM_0_20ms;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_CanTp_CanTp_MainFunction {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_BSW_SCHM;
+         EVENT = Rte_Ev_Run_CanTp_CanTp_MainFunction;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   EVENT Rte_Ev_Cyclic2_OsTask_BSW_SCHM_0_10ms {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Cyclic2_OsTask_BSW_SCHM_0_20ms {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_CanTp_CanTp_MainFunction {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_Communication_Read_APP_ComReadandWrite_Runnable {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
